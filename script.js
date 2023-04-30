@@ -13,3 +13,38 @@ const apiUrls = [
 ];
 
 // You can write your code here
+function pAll() {
+  const startTime = performance.now();
+  const fetchedRqst = apiUrls.map((url) => fetch(url));
+  const outputAll = document.querySelector('#output-all');
+  const outputAny = document.querySelector('#output-any');
+
+  Promise.all(fetchedRqst)
+    .then((response) => {
+      return Promise.all(response.map((response) => response.json()));
+    })
+    .then((data) => {
+      const endTime = performance.now();
+      const timeTaken = endTime - startTime;
+      outputAll.innerHTML = timeTaken;
+    });
+
+}
+pAll()
+
+function pAny() {
+  const startTime = performance.now();
+  const fetchedRqst = apiUrls.map((url) => fetch(url));
+  const outputAny = document.querySelector('#output-any');
+
+  Promise.all(fetchedRqst)
+    .then((response) => {
+      return Promise.any(response.map((response) => response.json()));
+    })
+    .then((data) => {
+      const endTime = performance.now();
+      const timeTaken = endTime - startTime;
+      outputAny.innerHTML = timeTaken;
+    });
+}
+pAny()
